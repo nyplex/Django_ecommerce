@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-ju79c@quze(ter^ic5_+mhse_vn*&w6kc3nedi=p(#(r7#%2pu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['nyplex-django-ecommerce.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -123,18 +123,23 @@ WSGI_APPLICATION = 'django_ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+if 'POSTGRES_URL' in os.environ:
+    POSTGRES_URL = os.environ.get('POSTGRES_URL')
+    DATABASES = {
+        'default': dj_database_url.parse(POSTGRES_URL)
+    }
+    
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
-POSTGRES_URL = os.environ.get('POSTGRES_URL')
 
-DATABASES = {
-    'default': dj_database_url.parse(POSTGRES_URL)
-}
+
+
 
 
 # Password validation
